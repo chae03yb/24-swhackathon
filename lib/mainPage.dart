@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:pick_or_save/pick_or_save.dart';
+
 
 class Mainpage extends StatefulWidget {
   const Mainpage({super.key});
@@ -13,8 +17,20 @@ List<String> titleText = ['블랙박스 기록', '가감속 기록', '회전수 
 List<Widget> _selectedTop = [
   blackbox(), gagamsok(), hoejeonsu()
 ];
+List<String> saveName = ["blackbox.mp3","gagamsok.txt","hoejeonsu.txt"];
 
 class _MainpageState extends State<Mainpage> {
+
+  @override
+  void initState()  {
+    super.initState();
+
+    getApplicationDocumentsDirectory().then((value) {
+      for(int i = 0;i<3;i++)
+        File(value.path + '/' + saveName[i]).openWrite(mode: FileMode.append).write("");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -32,13 +48,34 @@ class _MainpageState extends State<Mainpage> {
 
         child: Column(
           children: [
+            Container(
+              height: (screenHeight-45)/2,
+              width: screenWidth,
+              child: Stack(
+                children: [
+                  _selectedTop[_selected],
+                  Column(
+                    children: [
+                      SizedBox(height: (screenHeight-45)/2-60,width: screenWidth),
+                      Row(
+                        children: [
+                          SizedBox(height: 60,width: screenWidth-60),
 
-            Expanded(
-                child: Container(
-                  height: (screenHeight-45)/2,
-                  width: screenWidth,
-                  child: _selectedTop[_selected],
-                ),
+                          Expanded(
+                            child: IconButton(
+                              onPressed: () {
+                                Outsave();
+                              },
+                              icon: Icon(Icons.download_rounded),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+
+                ],
+              )
             ),
 
             Divider(thickness: 1,color: Colors.black,indent: 15,endIndent: 15,),
@@ -119,5 +156,39 @@ class hoejeonsu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(color: Colors.green);
   }
+}
+
+// 파일 쓰기
+void writeFile(String s) async {
+  // 내부 저장소의 경로를 가져올 때 getTemporaryDirectory() 함수를 이용할 수 있으나, 임시 디렉터리는 캐시를 이용하므로 앱이 종료되고 일정 시간이 지나면 사라질 수 있다.
+  var dir = await getApplicationDocumentsDirectory();
+  File(dir.path + '/' + saveName[_selected]).openWrite(mode: FileMode.append).write(s+"/n");
+}
+
+// 파일 읽기
+void readFile() async {
+  try {
+    var dir = await getApplicationDocumentsDirectory();
+    var file = await File(dir.path + '/'+saveName[_selected]).readAsString();
+    print(file);
+  } catch (e) {
+    print(e.toString());
+  }
+}
+
+
+void Outsave() async{
+
+  var dir = await getApplicationDocumentsDirectory();
+
+  PickOrSave().fileSaver(
+      params: FileSaverParams(
+        saveFiles: [
+          SaveFileInfo(
+              filePath: dir.path+'/'+saveName[_selected],
+              fileName: saveName[_selected])
+        ],
+      )
+  );
 }
 

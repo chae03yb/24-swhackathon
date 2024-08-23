@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   path_provider: ^2.1.4
   bluetooth_classic: ^0.0.1
+  pick_or_save: ^2.2.4
 
 dev_dependencies:
   flutter_test:
