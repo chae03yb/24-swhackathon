@@ -21,7 +21,7 @@ List<String> titleText = ['블랙박스 기록', '페달 기록', 'RPM 기록'];
 List<Widget> _selectedTop = [
   blackbox(), DrawData(kind: 0), DrawData(kind: 1)
 ];
-List<String> saveName = ["blackbox.mp3","gagamsok.txt","hoejeonsu.txt"];
+List<String> saveName = ["blackbox.mp4","gagamsok.txt","hoejeonsu.txt"];
 
 class _MainpageState extends State<Mainpage> {
 
