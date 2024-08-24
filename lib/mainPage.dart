@@ -308,5 +308,5 @@ void Outsave() async{
 }
 
 void call119() async {
-  await FlutterPhoneDirectCaller.callNumber("01083653822");
+  await FlutterPhoneDirectCaller.callNumber("119");
 }
