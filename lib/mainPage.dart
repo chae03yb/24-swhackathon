@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -7,6 +5,7 @@ import 'package:pick_or_save/pick_or_save.dart';
 import 'package:video_player/video_player.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 
 class Mainpage extends StatefulWidget {
@@ -308,3 +307,6 @@ void Outsave() async{
   );
 }
 
+void call119() async {
+  await FlutterPhoneDirectCaller.callNumber("01083653822");
+}
